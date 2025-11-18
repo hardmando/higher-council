@@ -1,0 +1,36 @@
+{
+  "api_keys": {
+    "brave_search": "YOUR_BRAVE_API_KEY_HERE",
+    "openai": ""
+  },
+  "ollama": {
+    "url": "http://localhost:11434",
+    "num_threads": 0,
+    "num_gpu": -1
+  },
+  "models": {
+    "preprocessor": "llama3.2:3b",
+    "simple": "llama3.2:3b",
+    "code": "qwen2.5:7b",
+    "creative": "llama3.2:3b",
+    "council": [
+      "llama3.2:3b",
+      "phi3.5:3.8b",
+      "qwen2.5:3b"
+    ],
+    "judge": "llama3.2:3b"
+  },
+  "search": {
+    "enabled": true,
+    "default_results": 5
+  },
+  "performance": {
+    "cpu_threads": 0,
+    "context_length": 2048,
+    "batch_size": 512
+  },
+  "storage": {
+    "chats_dir": "~/.local/share/ai-council/chats",
+    "attachments_dir": "~/.local/share/ai-council/attachments"
+  }
+}

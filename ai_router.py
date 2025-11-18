@@ -12,6 +12,14 @@ class AIModel:
         self.name = name
         self.model = model
         self.ollama_url = ollama_url
+        
+        # Load config for GPU settings
+        try:
+            from config import Config
+            config = Config()
+            self.num_gpu = config.get("ollama.num_gpu", 0)  # Default to CPU-only
+        except:
+            self.num_gpu = 0  # Fallback to CPU if config not available
     
     async def generate(self, prompt: str, system: str = "") -> Dict:
         """Generate response from this model"""
@@ -27,7 +35,10 @@ class AIModel:
                     json={
                         "model": self.model,
                         "messages": messages,
-                        "stream": False
+                        "stream": False,
+                        "options": {
+                            "num_gpu": self.num_gpu  # Force CPU or GPU based on config
+                        }
                     },
                     timeout=aiohttp.ClientTimeout(total=120)
                 ) as response:

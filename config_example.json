@@ -6,7 +6,7 @@
   "ollama": {
     "url": "http://localhost:11434",
     "num_threads": 0,
-    "num_gpu": -1
+    "num_gpu": 0
   },
   "models": {
     "preprocessor": "llama3.2:3b",

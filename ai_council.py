@@ -15,6 +15,9 @@ class AICouncilMember:
         self.specialty = specialty
         self.ollama_url = ollama_url
         self.web_searcher = web_searcher
+        
+        # Always use CPU-only (GPU causes freezing on your system)
+        self.num_gpu = 0
     
     async def generate(self, prompt: str, context: str = "", allow_search: bool = False) -> Dict:
         """Generate a response from this council member"""
@@ -43,7 +46,11 @@ class AICouncilMember:
                     json={
                         "model": self.model,
                         "prompt": full_prompt,
-                        "stream": False
+                        "stream": False,
+                        "options": {
+                            "num_gpu": self.num_gpu,  # Force CPU-only
+                            "num_thread": 6  # Use 6 threads for i7-7700
+                        }
                     },
                     timeout=aiohttp.ClientTimeout(total=120)
                 ) as response:
@@ -166,9 +173,15 @@ class AICouncil:
                 search_context = f"Web Search Results:\n{search_results}\n\n"
         
         # Get responses from council members
+        # Note: Running sequentially to prevent RAM/GPU overload
+        # If you have more RAM, you can run them concurrently
         print("🤖 Gathering council responses...")
         responses = []
-        for member in self.members:
+        
+        # Optional: Run first model to "warm up" Ollama, then rest can be faster
+        for i, member in enumerate(self.members):
+            if i == 0:
+                print(f"  Starting with {member.name}...")
             response = await member.generate(query, search_context, allow_search=use_search)
             responses.append(response)
         

@@ -188,7 +188,3 @@ Built with:
 - [Ollama](https://ollama.ai/) - Local LLM inference
 - [Textual](https://textual.textualize.io/) - Terminal UI
 - [Brave Search API](https://brave.com/search/api/) - Web search
-
----
-
-**Note:** Keep your `config.json` private! It contains API keys. Never commit it to git (protected by `.gitignore`).
